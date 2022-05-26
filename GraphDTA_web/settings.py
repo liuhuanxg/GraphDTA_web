@@ -75,13 +75,13 @@ WSGI_APPLICATION = 'GraphDTA_web.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.mysql',  # 配置链接mysql数据库
-        'NAME': 'GraphDTA_web_git_one',  # 要连接的数据库名称
-        'HOST': '127.0.0.1',  # 数据库的ip地址
-        'USER': 'root',  # 数据库的用户名
-        'PASSWORD': 'root123456',  # 数据库密码
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.mysql',  # 配置链接mysql数据库
+        # 'NAME': 'GraphDTA_web_git_one',  # 要连接的数据库名称
+        # 'HOST': '127.0.0.1',  # 数据库的ip地址
+        # 'USER': 'root',  # 数据库的用户名
+        # 'PASSWORD': 'root123456',  # 数据库密码
     }
 }
 
