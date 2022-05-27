@@ -1,23 +1,48 @@
 使用技术：
-    前台技术：HTML，CSS，bootstrap(前端模板)
-    后台技术：python，django框架，mysql存储数据
+    前台技术：html，CSS，bootstrap(前端模板)
+    后台技术：python，django框架，sqlite存储数据
 
-主要文件夹/文件作用：
-    1. bin目录：在linux/mac系统中的快捷启动文件。在python环境中可以使用python manage.py runserver的方式启动
-    2. GraphDTA：算法文件保存的路径
-    3. GraphDTA_web：项目的根路径
+技术选型考虑：
+    框架选择：
+        因为算法是使用python语言实现的，所以在设计可视化展示的时候也使用python语言作为底层语言。同时python语言有很多的web框架可供选择，
+        如：django，flask，tornado框架等，因为django框架搭建便捷，可扩展性很强；同时django框架自身支持ORM(Object Relational Mapping，
+        对象关系映射，可以直接用python中的类映射数据库中的表)，操作数据库十分便捷，并且提供了丰富的curl(数据库的增删改查)操作，很易于上手。
+        在国内是使用人数最多的python web框架，有庞大的社区资源支撑，所以选用django框架作为基础框架进行开发。
+        Django框架采用的是基于MVC模式的MTV模式：将模版，数据和业务处理部分解藕
+        mtv三层分别是
+            Model： 模型层，负责与数据库交互
+            Template： 模板层，也就是所谓的前端，负责把页面展示给用户，
+            View：视图层，负责业务逻辑，在适当的时候调用Model和Template两层。
+    前端技术选择：
+        html：全称为超文本标记语言，是一种标记语言。它包括一系列标签如p标签(段落标签)，a标签(超链接标签),h1标签(标题标签)等。
+            通过这些标签可以将网络上的文档格式统一，使分散的Internet资源连接为一个逻辑整体。HTML文本是由HTML命令组成的描述性文本，
+            HTML命令可以说明文字，图形、动画、声音、表格、链接等，主要定义页面中的结构，如上下结构，层级结构等。
+        CSS：层叠样式表(英文全称：Cascading Style Sheets)是一种用来表现HTML（标准通用标记语言的一个应用）或XML（标准通用标记语言的一个子集）等文件样式的计算机语言。
+            CSS不仅可以静态地修饰网页，还可以配合各种脚本语言动态地对网页各元素进行格式化。同时CSS能够对网页中元素位置的排版进行像素级精确控制，
+            支持几乎所有的字体字号样式，拥有对网页对象和模型样式编辑的能力。主要控制HTML标签的表现形式如：字体大小，背景颜色等，让页面看起来更加美观。
+        bootstrap：Bootstrap是目前全球最流行、最火爆的Web前端开发框架之一。它的强大之处在于它将常见的CSS布局小组件和JavaScript插件进行了完整并完善的封装，能让没有经验的前端工程师和后端开发工程师都迅速掌握和使用，大大提高开发效率。此外，它还能在某种程度上规范前端团队编写CSS和JavaScript的规范
+    sqlite数据库：
+        是一款轻型的数据库，是遵守ACID的关系型数据库管理系统，它包含在一个相对小的C库中，占用资源非常的低。在django框架中，内置了对sqlite数据库的支持，可以无缝衔接sqlite数据库。
+        本系统中使用sqlite数据库存储数据集路径、数据集名称、模型、以及模型的计算结果。因为单次跑模型需要的时间很久，所以把上次运行的结果进行保存，这样同一个数据集就可以节省执行时间。
+开发步骤：    
+    1.首先按照django库，本系统使用的django库是2.0.5版本
+    2.安装django库之后使用django-admin startproject GraphDTA_web 命令即可创建名为GraphDTA_web的django项目。创建完成之后最开始项目文件夹下只有一个manage.py和一个GraphDTA_web子文件夹，manage.py为项目的启动文件，GraphDTA_web是项目的根目录。
+    3. GraphDTA_web文件夹下有3个主要文件：
+        settings.py：为项目的配置文件：包括项目时区配置、静态文件配置、数据库配置等。
+        urls.py：项目的根路由文件，当在浏览器上访问时，首先经过根路由进行路径分发，找到对应的视图方法。
+        wsgi.py：django自带的uwsgi服务。
     4. home：项目主app路径。主要需要关注：
         1. urls.py(路由) 
         2. views.py(视图文件，操作数据库，并且返回页面)
         3. models.py：数据表设计
     5. static:静态文件存储位置如css，js等文件
     6. templates：html文件存储位置
-    7. manage.py项目的启动文件
-    
-    
-设计方案：
-    django框架搭建便捷，并且可扩展性很强，选用django作为框架可以很快的搭建web服务。
-    在前端上选择使用bootstrap框架，可以很快搭建页面结构，维护起来也很方便。
+    7. GraphDTA：算法文件保存的路径，用户上传的其他文件也存储在这里。
+
+项目主要实现的方法：
+    在home/views.py中主要实现了两个方法：index，和upload_data_set，其中index为选择数据集和模型的方法，用户选择之后提交数据集和模型，后台进行运算，并把计算的结果存储在数据库中，计算完成之后，返回计算结果。
+    upload_data_set方法为上传数据集接口，在上传数据集时，判断数据集的名称，如果上传的数据集不是.txt，就提示要上传.txt文件。上传的文件存储在GraphDTA/upload中，分别放置在两个文件夹下，其中data_set放数据集，algorithm_set放模型算法。
+
 
 设计细节：
     因为完整跑一次的过程时间很长，所以采用数据入库的方式：
